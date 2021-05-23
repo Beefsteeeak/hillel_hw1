@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from faker import Faker
 import csv
+import requests
 
 fake = Faker()
 
@@ -55,9 +56,18 @@ def mean():
                 weight += float(row[2])
     meanheight = (height / j) * 2.54
     meanweight = (weight / j) * 0.454
-    superline = "Mean height in cm " + "{}".format(meanheight) + "\n" + "Mean weight in kg " + "{}".format(meanweight)
+    superline = "Mean height in cm: " + "{}".format(meanheight) + "\n" + "Mean weight in kg: " + "{}".format(meanweight)
     superline = superline.replace('\n', '<br>')
     return superline
+
+
+# task4
+@app.route('/space/')
+def number_of_astronauts():
+    r = requests.get("http://api.open-notify.org/astros.json")
+    a = r.json()["number"]
+    number = "Number of astronauts: " + "{}".format(a)
+    return number
 
 
 if __name__ == '__main__':
