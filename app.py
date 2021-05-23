@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from faker import Faker
+import csv
 
 fake = Faker()
 
@@ -34,6 +35,27 @@ def generate_users():
     superline = ""
     for _ in range(n):
         superline += fake.name() + ' ' + fake.name().lower().replace(' ', '') + '@mail.com' + '\n'
+    superline = superline.replace('\n', '<br>')
+    return superline
+
+
+# task3
+@app.route('/mean/')
+def mean():
+    j = 0
+    height = 0
+    weight = 0
+    with open("hw.csv") as f:
+        reader = csv.reader(f)
+        next(reader)
+        for row in reader:
+            if row:
+                j += 1
+                height += float(row[1])
+                weight += float(row[2])
+    meanheight = (height / j) * 2.54
+    meanweight = (weight / j) * 0.454
+    superline = "Mean height in cm " + "{}".format(meanheight) + "\n" + "Mean weight in kg " + "{}".format(meanweight)
     superline = superline.replace('\n', '<br>')
     return superline
 
